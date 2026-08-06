@@ -1,4 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const backgroundWave = document.querySelector('.background-wave');
+
+  if (backgroundWave) {
+    const waveContext = backgroundWave.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let animationFrame;
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+    let pixelRatio = 1;
+
+    const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
+
+    function resizeBackgroundWave() {
+      canvasWidth = window.innerWidth;
+      canvasHeight = window.innerHeight;
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+      backgroundWave.width = Math.round(canvasWidth * pixelRatio);
+      backgroundWave.height = Math.round(canvasHeight * pixelRatio);
+      waveContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    }
+
+    function drawBackgroundWave(timestamp = 0) {
+      const time = timestamp * 0.001;
+      const motionSpeed = 0.4;
+      const movementTime = time * motionSpeed;
+      const spacing = canvasWidth < 700 ? 16 : 20;
+      const waveWidth = canvasWidth * 0.78;
+      const startY = canvasHeight * 0.24;
+
+      waveContext.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      for (let y = startY; y < canvasHeight + spacing; y += spacing) {
+        for (let x = -spacing; x < waveWidth; x += spacing) {
+          const horizontalFade = clamp(1 - Math.pow(Math.max(x, 0) / waveWidth, 1.75), 0, 1);
+          const wave = Math.sin(x * 0.024 + y * 0.018 - movementTime * 2.6);
+          const ripple = Math.sin(x * 0.012 - y * 0.027 + movementTime * 1.7);
+          const crest = canvasHeight * 0.34
+            + Math.sin(x * 0.011 - movementTime * 1.05) * canvasHeight * 0.105
+            + Math.sin(x * 0.028 + movementTime * 0.7) * canvasHeight * 0.035;
+
+          if (y < crest || horizontalFade <= 0) {
+            continue;
+          }
+
+          const depth = (wave + 1) * 0.5;
+          const pointX = x + (wave * 15 + ripple * 7) * horizontalFade;
+          const pointY = y + (wave * 34 + ripple * 10) * horizontalFade;
+          const edgeFade = clamp((y - crest) / (canvasHeight * 0.18), 0, 1);
+          const alpha = (0.13 + depth * 0.64) * horizontalFade * edgeFade;
+          const radius = 0.55 + depth * 2.7;
+
+          waveContext.beginPath();
+          waveContext.ellipse(pointX, pointY, radius * (1 + Math.abs(ripple) * 0.5), radius * (0.72 + depth * 0.24), ripple * 0.6, 0, Math.PI * 2);
+          waveContext.fillStyle = `rgba(37, 99, 235, ${alpha})`;
+          waveContext.fill();
+        }
+      }
+
+      if (!reduceMotion.matches && !document.hidden) {
+        animationFrame = window.requestAnimationFrame(drawBackgroundWave);
+      }
+    }
+
+    function restartBackgroundWave() {
+      window.cancelAnimationFrame(animationFrame);
+      resizeBackgroundWave();
+      animationFrame = window.requestAnimationFrame(drawBackgroundWave);
+    }
+
+    window.addEventListener('resize', restartBackgroundWave, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && !reduceMotion.matches) {
+        animationFrame = window.requestAnimationFrame(drawBackgroundWave);
+      }
+    });
+
+    resizeBackgroundWave();
+    drawBackgroundWave();
+  }
+
   const navLinks = document.querySelectorAll('.nav-links a');
   const sections = document.querySelectorAll('section[id]');
   const menuToggle = document.querySelector('.menu-toggle');
