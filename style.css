@@ -313,23 +313,6 @@ button, input, textarea {
   border-color: rgba(107, 91, 255, 0.24);
 }
 
-.service-card span,
-.pricing-card span {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1rem;
-  background: rgba(59, 130, 246, 0.14);
-  color: #7dd3fc;
-  margin-bottom: 1.3rem;
-  line-height: 1.2;
-  font-size: 0.75rem;
-}
-
 .service-card h3,
 .portfolio-card h3,
 .testimonial-card h3,
