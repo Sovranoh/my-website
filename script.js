@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           waveContext.beginPath();
           waveContext.ellipse(pointX, pointY, radius * (1 + Math.abs(ripple) * 0.5), radius * (0.72 + depth * 0.24), ripple * 0.6, 0, Math.PI * 2);
-          waveContext.fillStyle = `rgba(37, 99, 235, ${alpha})`;
+          waveContext.fillStyle = `rgba(0, 0, 125, ${alpha})`;
           waveContext.fill();
         }
       }
