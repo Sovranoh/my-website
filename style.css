@@ -574,9 +574,11 @@ textarea {
 
 .footer small {
     color: var(--muted);
+    display: block;
+    width: 100%;
     text-align: center;
     position: relative;
-    top: -10px;
+    transform: translateY(-15px);
 }
 
 .footer-logo {
