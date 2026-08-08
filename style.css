@@ -573,14 +573,10 @@ textarea {
 }
 
 .footer small {
-  color: var(--muted);
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 2rem;
-  align-items: center;
+    color: var(--muted);
+    text-align: center;
+    position: relative;
+    top: -10px;
 }
 
 .footer-logo {
