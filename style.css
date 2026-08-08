@@ -339,6 +339,7 @@ button, input, textarea {
 .portfolio-card img {
   border-radius: 1.5rem;
   margin-bottom: 1.3rem;
+  filter: brightness(0.7) saturate(0.8) contrast(1.08);
 }
 
 .portfolio-meta {
