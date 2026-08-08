@@ -749,4 +749,11 @@ textarea {
     right: 0.95rem;
     bottom: 0.95rem;
   }
+.copyright {
+    display: block;
+    text-align: center;
+    position: relative;
+    top: -10px;
+}
+
 }
